@@ -1,10 +1,9 @@
 import React, {useCallback} from 'react'
 import { useForm } from 'react-hook-form'
 import {Button, Input, Select, RTE} from '../index' 
-import appwriteServuce from '../../appwrite/config'
+import appwriteService from '../../appwrite/config'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import e from 'express'
 
 
 
@@ -26,13 +25,13 @@ function PostForm({post}) {
 
     const submit = async (data)=>{
       if(post){
-        const file =  data.image[0] ? appwriteServuce.uploadFile(data.image[0]) : null
-          
+        const file = (data.image && data.image[0]) ? await appwriteService.uploadFile(data.image[0]) : null
+
         if(file){
-          appwriteServuce.deleteFile(post.featuredImage)
+          await appwriteService.deleteFile(post.featuredImage)
         }
 
-        const dbPost = await appwriteServuce.updatePost(post.$id, {
+        const dbPost = await appwriteService.updatePost(post.$id, {
           ...data,
           featuredImage: file ? file.$id : undefined,
         })
@@ -41,13 +40,13 @@ function PostForm({post}) {
           navigate(`/post/${dbPost.id}`)
         }
       }else{
-        const file = await appwriteServuce.uploadFile(data.Image[0])
+        const file = (data.image && data.image[0]) ? await appwriteService.uploadFile(data.image[0]) : null
 
         if(file){
           const fileId = file.$id
           data.featuredImage = fileId
 
-          const dbpost = await appwriteServuce.createPost({
+          const dbpost = await appwriteService.createPost({
             ...data,
             userID : userData.$id,
           })
@@ -61,22 +60,23 @@ function PostForm({post}) {
 
 
     const slugTransform = useCallback((value)=>{
-      if(value && typeof value === "string")
+      if(value && typeof value === "string"){
         return value
-        .trim()
-        .toLowerCase
-        .replace(/^[a-zA-Z\d\s]+/g, "-",)
-        .replace(/\s/g, "-")
+          .trim()
+          .toLowerCase()
+          .replace(/[^a-z0-9\s-]/g, "")
+          .replace(/\s+/g, "-")
+      }
 
       return ""
     },[])
 
     React.useEffect(()=>{
       const subscription = watch((value, {name})=>{
-        if( name == "title"){
-          setValue("slug",slugTransform(value.title, {
+        if(name === "title"){
+          setValue("slug", slugTransform(value.title), {
             shouldValidate: true,
-          }))
+          })
         }
       })
 

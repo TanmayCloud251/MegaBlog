@@ -16,11 +16,11 @@ export class AuthService {
 
      async createAccount({email, password, name}){
         try {
-            await this.account.create(ID.unique(), email, password, name);
+            const userAccount = await this.account.create(ID.unique(), email, password, name);
 
             if(userAccount){
-                // call another method
-                return this.login(email, password)
+                // call another method - create session after signup
+                return this.login({ email, password })
             }else{
                 return userAccount;
             }
@@ -31,9 +31,23 @@ export class AuthService {
 
      }
 
-     async login({email, password}){
+     async login(data){
         try {
-            return await this.account.createEmailSession(email, password)
+            const { email, password } = data || {};
+            const session = await this.account.createEmailPasswordSession(email, password);
+
+            // Create JWT and set it on client so subsequent requests are authenticated
+            try {
+                const token = await this.account.createJWT();
+                if(token && token.jwt){
+                    this.client.setJWT(token.jwt);
+                }
+            } catch (jwtErr) {
+                // non-fatal: if JWT creation fails, continue — calls may still work via cookies
+                console.warn('Failed to create/set JWT after login', jwtErr);
+            }
+
+            return session;
         } catch (error) {
             throw error;
         }
@@ -50,7 +64,9 @@ export class AuthService {
 
      async logout(){
         try {
-          await this.account.deleteSessions(); 
+                    await this.account.deleteSessions(); 
+                    // Clear JWT on client
+                    try { this.client.setJWT(''); } catch (e) {}
         } catch (error) {
             throw error
         }

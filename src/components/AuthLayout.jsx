@@ -24,4 +24,3 @@ function Protected({children, authentication = true}) {
 }
 
 export default Protected
-{children, authentication}
