@@ -20,7 +20,7 @@ function PostForm({post}) {
     })
 
     const navigate = useNavigate()
-    const userData = useSelector(state => state.user.userData)
+  const userData = useSelector(state => state.auth.userData)
 
 
     const submit = async (data)=>{
@@ -40,6 +40,12 @@ function PostForm({post}) {
           navigate(`/post/${dbPost.id}`)
         }
       }else{
+        // ensure user is logged in before creating a post
+        if(!userData){
+          navigate('/login')
+          return
+        }
+
         const file = (data.image && data.image[0]) ? await appwriteService.uploadFile(data.image[0]) : null
 
         if(file){
@@ -48,7 +54,7 @@ function PostForm({post}) {
 
           const dbpost = await appwriteService.createPost({
             ...data,
-            userID : userData.$id,
+            userId : userData.$id,
           })
           if(dbpost){
             navigate(`/post/${dbpost.id}`)

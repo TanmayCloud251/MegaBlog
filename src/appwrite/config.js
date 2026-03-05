@@ -20,6 +20,7 @@ export class Service{
             return await this.databases.createDocument(
                 conf.databaseId,
                 conf.collectionId,
+                // use slug as document id (or change to ID.unique() if you prefer)
                 slug,
                 {
                     title,
@@ -27,7 +28,12 @@ export class Service{
                     featuredImage,
                     status,
                     userId
-                }
+                },
+                // make document readable by anyone (public) and writable only by the owner
+                ["role:all"],
+                [
+                    `user:${userId}`
+                ]
             )
         } catch (error) {
             console.log("Appwrite Service ::  CreatePost :: Error:", error)
