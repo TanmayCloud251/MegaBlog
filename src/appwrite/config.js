@@ -1,27 +1,30 @@
-import conf from "../conf/conf"
-import { Client,ID, Databases, Storage, Query } from "appwrite";
+import conf from "../conf/conf";
+import { ID, Databases, Storage, Query } from "appwrite";
+import client from "./client";
 
 export class Service{
-    client = new Client();
     databases;
     bucket;
 
     constructor(){
-        this.client
-        .setEndpoint(conf.url)
-        .setProject(conf.projectId);
-        
-        this.databases = new Databases(this.client);
-        this.bucket = new Storage(this.client);
+        this.databases = new Databases(client);
+        this.bucket = new Storage(client);
     }
 
     async createPost({title, slug, content, featuredImage, status, userId}){
         try {
+            // If slug is falsy, generate a unique id to avoid collisions
+            const docId = slug || ID.unique();
+
+            // NOTE: Appwrite permissions format has changed across versions. To avoid
+            // sending an invalid permissions payload from the client, we rely on the
+            // collection's default permissions (configured in the Appwrite Console).
+            // If you want per-document permissions, set them in the Console or implement
+            // a server-side function to set them with the correct format.
             return await this.databases.createDocument(
                 conf.databaseId,
                 conf.collectionId,
-                // use slug as document id (or change to ID.unique() if you prefer)
-                slug,
+                docId,
                 {
                     title,
                     content,
@@ -29,11 +32,9 @@ export class Service{
                     status,
                     userId
                 },
-                // make document readable by anyone (public) and writable only by the owner
-                ["role:all"],
-                [
-                    `user:${userId}`
-                ]
+                // leave read/write permissions null so Appwrite applies collection defaults
+                null,
+                null
             )
         } catch (error) {
             console.log("Appwrite Service ::  CreatePost :: Error:", error)
@@ -120,7 +121,7 @@ export class Service{
     }
 
     getFilePreview(fileId){
-        return this.bucket.getFilePreview(
+        return this.bucket.getFileView(
             conf.bucketId,
             fileId
         )

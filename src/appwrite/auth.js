@@ -1,16 +1,11 @@
-import conf from "../conf/conf"
-import { Client,Account,ID } from "appwrite";
+import { Account, ID } from "appwrite";
+import client from "./client";
 
 export class AuthService {
-     client = new Client();
-     account = new Account(); 
+     account; 
 
      constructor(){
-        this.client
-        .setEndpoint(conf.url)
-        .setProject(conf.projectId)
-        
-        this.account = new Account(this.client)
+        this.account = new Account(client)
      }
     
 
@@ -31,23 +26,9 @@ export class AuthService {
 
      }
 
-     async login(data){
+     async login({email, password}){
         try {
-            const { email, password } = data || {};
-            const session = await this.account.createEmailPasswordSession(email, password);
-
-            // Create JWT and set it on client so subsequent requests are authenticated
-            try {
-                const token = await this.account.createJWT();
-                if(token && token.jwt){
-                    this.client.setJWT(token.jwt);
-                }
-            } catch (jwtErr) {
-                // non-fatal: if JWT creation fails, continue — calls may still work via cookies
-                console.warn('Failed to create/set JWT after login', jwtErr);
-            }
-
-            return session;
+            return await this.account.createEmailPasswordSession(email, password);
         } catch (error) {
             throw error;
         }
@@ -57,18 +38,17 @@ export class AuthService {
         try {
             return await this.account.get();
         } catch (error) {
-            throw error;
+            // Do not throw error here, let the calling code handle it
+            // console.log("Appwrite service :: getCurrentUser :: error", error);
         }
         return null;
      }
 
      async logout(){
         try {
-                    await this.account.deleteSessions(); 
-                    // Clear JWT on client
-                    try { this.client.setJWT(''); } catch (e) {}
+            await this.account.deleteSessions();
         } catch (error) {
-            throw error
+            console.log("Appwrite service :: logout :: error", error);
         }
      }
 }

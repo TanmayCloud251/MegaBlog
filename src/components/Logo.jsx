@@ -1,9 +1,10 @@
 import React from 'react'
+import megablogLogo from '../assets/megablog.png'
 
-function Logo({width = "100px"}) {
+function Logo() {
   return (
-    <div>
-      Logo
+    <div className=''>
+      <img src={megablogLogo} alt="MegaBlog Logo" width="100px" className='rounded-b-2xl' />
     </div>
   )
 }

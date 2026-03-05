@@ -115,14 +115,14 @@ function PostForm({post}) {
                 <Input
                     label="Featured Image :"
                     type="file"
-                    className="mb-4"
+                    className="mb-4 bg-[#0F6B68]"
                     accept="image/png, image/jpg, image/jpeg, image/gif"
                     {...register("image", { required: !post })}
                 />
                 {post && (
                     <div className="w-full mb-4">
                         <img
-                            src={appwriteService.getFilePreview(post.featuredImage)}
+                            src={appwriteService.getFileView(post.featuredImage)}
                             alt={post.title}
                             className="rounded-lg"
                         />
@@ -131,7 +131,7 @@ function PostForm({post}) {
                 <Select
                     options={["active", "inactive"]}
                     label="Status"
-                    className="mb-4"
+                    className="mb-4 bg-[#0F6B68]"
                     {...register("status", { required: true })}
                 />
                 <Button type="submit" bgColor={post ? "bg-green-500" : undefined} className="w-full">
