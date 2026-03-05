@@ -3,7 +3,7 @@
 A minimalist, professional blogging platform designed for a distraction-free writing experience. **MegaBlog** combines a sleek, gray-themed UI with a powerful backend-as-a-service architecture.
 
 
-Live on : https://mega-blog-indol.vercel.app/login
+Live on : https://mega-blog-indol.vercel.app/
 ---
 
 ## 🚀 Features
