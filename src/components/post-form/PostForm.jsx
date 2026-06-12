@@ -92,8 +92,8 @@ function PostForm({post}) {
     },[watch, slugTransform, setValue])
 
    return (
-        <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
-            <div className="w-2/3 px-2">
+        <form onSubmit={handleSubmit(submit)} className="flex flex-wrap gap-y-6">
+            <div className="w-full lg:w-2/3 px-2">
                 <Input
                     label="Title :"
                     placeholder="Title"
@@ -111,11 +111,11 @@ function PostForm({post}) {
                 />
                 <RTE label="Content :" name="content" control={control} defaultValue={getValues("content")} />
             </div>
-            <div className="w-1/3 px-2">
+            <div className="w-full lg:w-1/3 px-2">
                 <Input
                     label="Featured Image :"
                     type="file"
-                    className="mb-4 bg-[#0F6B68]"
+                    className="mb-4"
                     accept="image/png, image/jpg, image/jpeg, image/gif"
                     {...register("image", { required: !post })}
                 />
@@ -124,18 +124,22 @@ function PostForm({post}) {
                         <img
                             src={appwriteService.getFileView(post.featuredImage)}
                             alt={post.title}
-                            className="rounded-lg"
+                            className="rounded-lg shadow-md"
                         />
                     </div>
                 )}
                 <Select
                     options={["active", "inactive"]}
                     label="Status"
-                    className="mb-4 bg-[#0F6B68]"
+                    className="mb-6"
                     {...register("status", { required: true })}
                 />
-                <Button type="submit" bgColor={post ? "bg-green-500" : undefined} className="w-full">
-                    {post ? "Update" : "Submit"}
+                <Button 
+                type="submit" 
+                bgColor={post ? "bg-green-600" : "bg-indigo-600"} 
+                className="w-full py-3 text-lg font-semibold"
+                >
+                    {post ? "Update Post" : "Publish Post"}
                 </Button>
             </div>
         </form>

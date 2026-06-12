@@ -1,1 +1,28 @@
 @import "tailwindcss";
+
+@theme {
+  --color-primary: #4f46e5;
+}
+
+@layer base {
+  body {
+    @apply text-slate-900 antialiased;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+}
+
+/* Style for parsed HTML content from the editor */
+.prose {
+  @apply max-w-none;
+}
+
+.prose h1 { @apply text-3xl font-bold mb-4 mt-8; }
+.prose h2 { @apply text-2xl font-bold mb-3 mt-6; }
+.prose h3 { @apply text-xl font-bold mb-2 mt-4; }
+.prose p { @apply mb-4 leading-relaxed; }
+.prose ul { @apply list-disc pl-5 mb-4; }
+.prose ol { @apply list-decimal pl-5 mb-4; }
+.prose li { @apply mb-1; }
+.prose a { @apply text-indigo-600 hover:underline; }
+.prose blockquote { @apply border-l-4 border-gray-300 pl-4 italic my-4; }
+.prose img { @apply rounded-xl my-6; }

@@ -15,12 +15,16 @@ function Home() {
 
   if(posts.length === 0) {
     return (
-        <div className='w-full py-8 mt-4 text-center '>
+        <div className='w-full py-20 text-center'>
             <Container>
-                <div className='flex flex-wrap'>
-                    <div className='p-2 w-full'>
-                        <h1 className='text-2xl font-bold hover:text-gray-500'>Login to read posts </h1>
-                    </div>
+                <div className='max-w-2xl mx-auto px-4'>
+                    <h1 className='text-4xl font-extrabold text-gray-900 mb-6'>
+                        Welcome to MegaBlog
+                    </h1>
+                    <p className='text-xl text-gray-600 mb-10'>
+                        The place to share your thoughts and explore new perspectives. 
+                        Login to start reading and creating amazing content.
+                    </p>
                 </div>
             </Container>
         </div>
@@ -30,9 +34,9 @@ function Home() {
   return(
     <div className='w-full py-8'>
         <Container>
-            <div className='flex flex-wrap'>
+            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
                 { posts.map((post)=> (
-                    <div key={post.$id} className='p-2 w-1/4'>
+                    <div key={post.$id}>
                         <PostCard {...post} />
                     </div>
                 ))}
