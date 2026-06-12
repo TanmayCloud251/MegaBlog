@@ -31,18 +31,18 @@ function Login() {
 
   return (
     <div className='flex items-center justify-center w-full py-8'>
-        <div className={`mx-auto w-full max-w-lg bg-white rounded-2xl p-10 shadow-xl border border-gray-100`}>
+        <div className={`mx-auto w-full max-w-lg bg-white dark:bg-slate-900 rounded-2xl p-10 shadow-xl border border-gray-100 dark:border-slate-800 transition-colors`}>
         <div className="mb-2 flex justify-center">
                     <span className="inline-block w-full max-w-[100px]">
                         <Logo width="100%" />
                     </span>
         </div>
-        <h2 className="text-center text-3xl font-extrabold leading-tight text-gray-900">Sign in to your account</h2>
-        <p className="mt-2 text-center text-base text-gray-600">
+        <h2 className="text-center text-3xl font-extrabold leading-tight text-gray-900 dark:text-white">Sign in to your account</h2>
+        <p className="mt-2 text-center text-base text-gray-600 dark:text-slate-400">
                     Don&apos;t have any account?&nbsp;
                     <Link
                         to="/signup"
-                        className="font-medium text-indigo-600 transition-all duration-200 hover:underline"
+                        className="font-medium text-indigo-600 dark:text-indigo-400 transition-all duration-200 hover:underline"
                     >
                         Sign Up
                     </Link>

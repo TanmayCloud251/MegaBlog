@@ -1,10 +1,12 @@
 import React from 'react'
-import megablogLogo from '../assets/megablog.png'
 
-function Logo({width = '100px'}) {
+function Logo({width = 'auto'}) {
   return (
-    <div className='flex items-center'>
-      <img src={megablogLogo} alt="MegaBlog Logo" style={{width}} className='rounded-lg hover:opacity-80 transition-opacity' />
+    <div className='flex items-center cursor-pointer group' style={{ width }}>
+      {/* Refined Minimalist Text Logo with Contrasting Dot */}
+      <span className='text-2xl font-bold tracking-tight text-slate-900 dark:text-white transition-colors duration-300'>
+        MegaBlog<span className='text-indigo-600 dark:text-indigo-500'>.</span>
+      </span>
     </div>
   )
 }

@@ -18,10 +18,10 @@ function Home() {
         <div className='w-full py-20 text-center'>
             <Container>
                 <div className='max-w-2xl mx-auto px-4'>
-                    <h1 className='text-4xl font-extrabold text-gray-900 mb-6'>
+                    <h1 className='text-4xl font-extrabold text-gray-900 dark:text-white mb-6 transition-colors'>
                         Welcome to MegaBlog
                     </h1>
-                    <p className='text-xl text-gray-600 mb-10'>
+                    <p className='text-xl text-gray-600 dark:text-slate-400 mb-10 transition-colors'>
                         The place to share your thoughts and explore new perspectives. 
                         Login to start reading and creating amazing content.
                     </p>

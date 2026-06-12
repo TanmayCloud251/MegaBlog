@@ -24,7 +24,7 @@ function App() {
   }, [])
 
   return !loading? (
-    <div className='min-h-screen flex flex-col bg-gray-50'>
+    <div className='min-h-screen flex flex-col bg-gray-50 dark:bg-slate-950 transition-colors duration-300'>
         <div className='w-full block'>
               <Header />
               <main className='py-8'>
